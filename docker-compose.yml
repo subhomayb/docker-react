@@ -1,0 +1,20 @@
+version: '3'
+services:
+ react_app:
+  restart: always
+  build:
+   context: . #here the name of the docker file is different, so we have mentioned the path of the file here
+   dockerfile: Dockerfile.dev #the Dockerfile for building the container. 
+  ports:
+    - "80:3000"
+  volumes: # Here we are mountng the volume to automate change from local machine to docker container.
+    - /app/node_modules
+    - .:/app #here "." means pwd
+ tests: # creating a 2nd service to automate the test process
+  build:
+   context: .
+   dockerfile: Dockerfile.dev
+  volumes:
+    - /app/node_modules
+    - .:/app
+  command: ["npm" , "run" , "test"] #here we are overiding the existing existing command in the Dockerfile

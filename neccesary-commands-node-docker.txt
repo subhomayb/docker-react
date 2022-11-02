@@ -1,0 +1,36 @@
+To build a docker container with a different name of the dockerfile such as "Dockerfile.dev" we have to use -f which means it will use a file as a Dockerfile to build the container. 
+docker build -f Dockerfile.dev
+
+npm run start: Starts up a development server. For dev use only.
+npm run test: Run tests associated with the project. 
+npm run build: Build a production version of the application. 
+
+Creating a React frontend app:
+We will create a react frontend app for this project. To do so first node has be to be installed. After node installation type in the following command:
+npx create-react-app frontend --> It will create a frontend folder with the react application files. You can name it anything you want. 
+After creating the react app run: npm run test If the test succeed then go for building the application.
+
+Now we have to build the source, to do this run: npm run build --> once its done you will seea build folder inside the application folder. This will used for production, it has an html and a js file inside.  
+Once the build is complete, run the application with: npm run start --> it will start the react project and you will see the deafult react page on the browser. 
+
+Now we will create a Dockerfile for the development phase.
+
+Duplicate dependencies: While building the docker image we are using node: alpine as the base image which have the dependencies that is there in the node_modules folder that is here in the folder. It gets created while creating the react app. So we can delete that folder so remove duplicate dependencies. 
+
+Docker Volume: Everytime we make a change in our project we have to again stop the container and build a new image and start a new container to reflect the new changes that we make on the application. Docker volume solves the problem. With Docker volume the changes will reflect automatically in the live project. We will have to change the docker run to attach a Docker volume. 
+with the docker run command we will use 2 tags such as i: -v /app/node_modules --> This will have all the node modules to build the application to run a node app. ii: -v $(pwd):/app --> pwd stands for "present working directory", so we are just mounting our pwd on the /app folder of the container. We can also attach the volume in our docker_compose.yml file.
+
+Once you run the docker image with docker volume now you can edit the react app. Just go to src/app.js and edit some text to see the change. Just refresh after you save the change and it will automatically shows up. 
+Now to run a docker container witha  long command to mount volume to automate the changes is real hectic. So we will use docker compose instead and just run the docker compose with volume mounted to build and run the container. 
+
+Executing test: docker run <container_id> npm run test
+For interactive test session: docker run -it <container_id> npm run test
+Now if we add more testing categories on src/App.test.js then it wont aoutomatically recognise the test policy, we have to stop and run the test again. So to automate it there are 2 solutions:
+i: Run docker-compose and from other terminal get the id of the running container and run the test with docker run -it <container_id> npm run test. 
+ii: Another solution is to create a 2nd service in docker-compose.yml file. But both are not 100% perfect.
+
+We have written Dockerfile.dev for development environment. Now we will write another Dockerfile specificly for production environment. For production we need an web server. We will use nginx as our web server. 
+For production environment we only care about the build directory. So while building the builder container will copy the build directory to nginx to serve it in our browser.
+The path of the build directory inside container is /app/build and we will copy it to /usr/share/nginx/html. The command will be
+COPY --from=builder /app/build /usr/share/nginx/html 
+
