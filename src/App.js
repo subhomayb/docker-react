@@ -7,7 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Nginx.
+          Welcome to AWS!
         </p>
         <a
           className="App-link"

@@ -34,3 +34,6 @@ For production environment we only care about the build directory. So while buil
 The path of the build directory inside container is /app/build and we will copy it to /usr/share/nginx/html. The command will be
 COPY --from=builder /app/build /usr/share/nginx/html 
 
+In the Dockerfile which is required to deploy the application into AWS we have to open the port otherwise the application will not open in browser to do that
+EXPOSE <port>
+Also before deploying the application rename the docker-compose.yml. Otherwise beanstalk will create the container out of it. 
