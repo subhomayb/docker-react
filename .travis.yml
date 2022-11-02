@@ -11,5 +11,5 @@ before_install:
 
 #script section contains the necessary commands to run the test suits
 script: 
- - docker run -e CI=true subhomay/docker-react npm run test -- -- coverage 
+ - docker run -e CI=true subhomay/docker-react npm run test
  #while runing npm run test its usualy waits for user data to quit or do further testing. "-- -- coverage" will exit the mode and give a result. Otherwise travis-ci will not exit and go to hang state.
