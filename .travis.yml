@@ -13,3 +13,18 @@ before_install:
 script: 
  - docker run -e CI=true subhomay/docker-react npm run test
  #while runing npm run test its usualy waits for user data to quit or do further testing. "-- -- coverage" will exit the mode and give a result. Otherwise travis-ci will not exit and go to hang state.
+
+#deploy the application in AWS Elasticbeanstalk
+
+deploy:
+ provider: elasticbeanstalk
+ region: "us-east-1"
+ app: "docker-react" #name of the app
+ env: "Dockerreact-env" #name of environment
+ bucket_name: "elasticbeanstalk-us-east-1-192570848398" #go to S3 and you will see a bucket the elastic beanstack has created
+ bucket_path: "docker-react" #this should be the name of the app that you have created. 1st time you wont see it. 
+ on:
+  branch: master
+ access_key_id: $AWS_ACCESS_KEY #We have added the access key on travis-ci --> project --> environment variable
+ secret_access_key: $AWS_SECRET_KEY #same as above
+  
