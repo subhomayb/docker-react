@@ -1,0 +1,6 @@
+We will configure travis-ci to test our codes. To do that we will use Dockerfile.dev as we will only test development phase. Once done then we will deploy the prod. 
+The steps will be:
+1. We will tell travis that we need a copy of docker running
+2. Build our image using Dockerfile.dev
+3. Tell travis how to run our test suite. 
+

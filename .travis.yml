@@ -1,0 +1,15 @@
+#need super user permission required
+sudo: required
+
+#install docker to run it.
+services:
+ - docker
+
+#before we run our tests or deply we need this steps to be performed. 
+before_install: 
+ - docker build -t subhomay/docker-react -f Dockerfile.dev . #it will build the docker image. 
+
+#script section contains the necessary commands to run the test suits
+script: 
+ - docker run -e CI=true subhomay/docker-react npm run test -- -- coverage 
+ #while runing npm run test its usualy waits for user data to quit or do further testing. "-- -- coverage" will exit the mode and give a result. Otherwise travis-ci will not exit and go to hang state.
