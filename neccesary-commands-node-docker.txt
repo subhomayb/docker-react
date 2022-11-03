@@ -37,3 +37,4 @@ COPY --from=builder /app/build /usr/share/nginx/html
 In the Dockerfile which is required to deploy the application into AWS we have to open the port otherwise the application will not open in browser to do that
 EXPOSE <port>
 Also before deploying the application rename the docker-compose.yml. Otherwise beanstalk will create the container out of it. 
+EXPOSE <port> will only work when an application is deployed in a prod server such as AWS farget, beanstalk etc. For nor use either mention port with -p or on docker-compose.yml file. 
